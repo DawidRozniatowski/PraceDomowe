@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Formularz ucznia</title>
+    <style>
+      input[type="text"], 
+      input[type="email"], 
+      input[type="number"], 
+      input[type="date"] {
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      .error-message {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Formularz ucznia</h1>
+    <form id="formularz-ucznia">
+      <label for="imie-nazwisko">Imię i nazwisko:</label>
+      <input type="text" id="imie-nazwisko" name="imie-nazwisko" required>
+      
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" name="email" required>
+      
+      <label for="ocena">Ocena:</label>
+      <input type="number" id="ocena" name="ocena" min="1" max="6" required>
+      
+      <label for="data">Data:</label>
+      <input type="date" id="data" name="data" required>
+      
+      <input type="submit" value="Wyślij">
+      <input type="reset" value="Resetuj">
+    </form>
+    
+    <div id="komunikaty-bledow"></div>
+    
+    <script>
+      const formularz = document.querySelector('#formularz-ucznia');
+      const imieNazwiskoInput = formularz.querySelector('#imie-nazwisko');
+      const emailInput = formularz.querySelector('#email');
+      const ocenaInput = formularz.querySelector('#ocena');
+      const dataInput = formularz.querySelector('#data');
+      const komunikatyBledow = document.querySelector('#komunikaty-bledow');
+
+      const imieNazwiskoRegex = /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\- ]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const ocenaRegex = /^[1-6]$/;
+      const dataRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+      formularz.addEventListener('submit', (event) => {
+        event.preventDefault();
+        komunikatyBledow.innerHTML = '';
+        let bledy = [];
+
+        if (!imieNazwiskoRegex.test(imieNazwiskoInput.value)) {
+          bledy.push('Niepoprawne imię i nazwisko');
+        }
+
+        if (!emailRegex.test(emailInput.value)) {
+          bledy.push('Niepoprawny adres e-mail');
+        }
+
+        if (!ocenaRegex.test(ocenaInput.value)) {
+          bledy.push('Niepoprawna ocena');
+        }
+
+        if (!dataRegex.test(dataInput.value)) {
+          bledy.push('Niepoprawna data');
+        }
+
+        if (bledy.length > 0) {
+          for (let i = 0; i < bledy.length; i++) {
+            const komunikatBledu = document.createElement('div');
+            komunikatBledu.classList.add('komunikat-bledu');
+            komunikatBledu.innerText = bledy[i];

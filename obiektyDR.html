@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<title>Konfigurator przycisku</title>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<header>
+			<h1>Konfigurator przycisku</h1>
+		</header>
+
+
+	<main>
+		<form id="formularz-przycisku">
+			<fieldset>
+				<legend>Ustawienia przycisku</legend>
+				
+				<div>
+					<label for="kolor">Kolor:</label>
+					<input type="color" id="kolor" name="kolor" required>
+				</div>
+
+				<div>
+					<label for="szerokosc">Szerokość:</label>
+					<input type="number" id="szerokosc" name="szerokosc" min="10" max="500" required>
+				</div>
+
+				<div>
+					<label for="tekst">Tekst:</label>
+					<input type="text" id="tekst" name="tekst" required>
+				</div>
+				
+				<button type="submit">Utwórz przycisk</button>
+			</fieldset>
+		</form>
+
+		<div id="kontener-przycisku"></div>
+	</main>
+
+	<footer>
+		<script>
+			const formularzPrzycisku = document.querySelector("#formularz-przycisku");
+			const kontenerPrzycisku = document.querySelector("#kontener-przycisku");
+			const przyciski = kontenerPrzycisku.querySelectorAll("button");
+
+			formularzPrzycisku.addEventListener("submit", function (e) {
+				e.preventDefault();
+
+				const kolor = formularzPrzycisku.elements.kolor.value;
+				const szerokosc = formularzPrzycisku.elements.szerokosc.value;
+				const tekst = formularzPrzycisku.elements.tekst.value;
+
+				const przycisk = document.createElement("button");
+				przycisk.style.backgroundColor = kolor;
+				przycisk.style.width = szerokosc + "px";
+				przycisk.textContent = tekst;
+
+				kontenerPrzycisku.appendChild(przycisk);
+			});
+
+			kontenerPrzycisku.addEventListener("click", function (e) {
+				if (e.target.tagName === "BUTTON") {
+					const kolor = e.target.style.backgroundColor;
+					const szerokosc = e.target.style.width;
+					const tekst = e.target.textContent;
+
+					alert(`Kolor: ${kolor}, Szerokość: ${szerokosc}, Tekst: ${tekst}`);
+				}
+			});
+		</script>
+	</footer>
+</body>
